@@ -6,15 +6,13 @@ from telebot import types
 import pymorphy2
 import json
 
-'''file = open('file.txt', 'w')
-file.close()'''
 
 API_TOKEN = '1831155618:AAFIFQ_90fKXotq50nQhFaBVJii35Sz09ZU'
 
 bot = telebot.TeleBot(API_TOKEN)
 morph = pymorphy2.MorphAnalyzer()
 
-file = open('data.txt', 'r')
+file = open('file.txt', 'r')
 tmp = file.read()
 records = {}
 glob_results = {}
@@ -320,21 +318,15 @@ def starting(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
     if call.data == '1':
-        bot.send_photo(call.message.chat.id, open('ChisloBot-1-4.png', 'rb'));
-
+        bot.send_photo(call.message.chat.id, open('data/ChisloBot-1-4.2.png', 'rb'))
+        bot.send_photo(call.message.chat.id, open('data/ChisloBot-1-4.png', 'rb'))
     elif call.data == '2':
-        bot.send_photo(call.message.chat.id, open('ChisloBot-5-20+30.png', 'rb'));
+        bot.send_photo(call.message.chat.id, open('data/ChisloBot-5-30+50-80.png', 'rb'))
     elif call.data == '3':
-        bot.send_photo(call.message.chat.id, open('ChisloBot-50+60+70+80.png', 'rb'));
+        bot.send_photo(call.message.chat.id, open('data/ChisloBot-40+90+100.png', 'rb'))
     elif call.data == '4':
-        bot.send_photo(call.message.chat.id, open('ChisloBot-40+90+100.png', 'rb'));
+        bot.send_photo(call.message.chat.id, open('data/ChisloBot-100s.png', 'rb'))
     elif call.data == '5':
-        bot.send_photo(call.message.chat.id, open('ChisloBot-100s.png', 'rb'));
-    elif call.data == '6':
-        bot.send_photo(call.message.chat.id, open('ChisloBot-999-.png', 'rb'));
-    elif call.data == '7':
-        bot.send_photo(call.message.chat.id, open('ChisloBot-1000+.png', 'rb'));
-    elif call.data == '8':
         bot.send_message(call.message.chat.id, 'А теперь готовы начать тренировку? Напомню:\n'
                                                "У меня есть четыре уровня тренировки.\n"
                                                "Простой вызывается командой /game1, и в нем потребуется склонять числа меньше тысячи;\n"
@@ -350,21 +342,14 @@ def callback_worker(call):
 def print_rules(message):
     keyboard = types.InlineKeyboardMarkup()
     key1 = types.InlineKeyboardButton(text='1, 2, 3 и 4', callback_data='1')
-    key2 = types.InlineKeyboardButton(text='5 – 20 и 30', callback_data='2')
-    key3 = types.InlineKeyboardButton(text='50, 60, 70, 80', callback_data='3')
-    key4 = types.InlineKeyboardButton(text='40, 90, 100', callback_data='4')
-    key5 = types.InlineKeyboardButton(text='сотни', callback_data='5')
-    key6 = types.InlineKeyboardButton(text='составные меньше 1000', callback_data='6')
-    key7 = types.InlineKeyboardButton(text='1000 и больше', callback_data='7')
-
-    key_return = types.InlineKeyboardButton(text='Назад', callback_data='8')
+    key2 = types.InlineKeyboardButton(text='5 – 30 и 50 - 80', callback_data='2')
+    key4 = types.InlineKeyboardButton(text='40, 90, 100', callback_data='3')
+    key5 = types.InlineKeyboardButton(text='сотни', callback_data='4')
+    key_return = types.InlineKeyboardButton(text='Назад', callback_data='5')
     keyboard.add(key1)
     keyboard.add(key2)
-    keyboard.add(key3)
     keyboard.add(key4)
     keyboard.add(key5)
-    keyboard.add(key6)
-    keyboard.add(key7)
     keyboard.add(key_return)
     bot.send_message(message.chat.id, 'Числительные делятся на порядковые, количественные и собирательные.\n'
                                       'Порядковые обозначают номер – например, "второй", "пятьдесят седьмой" или "сто семьдесят девятый".\n'
@@ -483,7 +468,7 @@ def stop_game(message):
         tmp[i] = [records[i], glob_results[i]]
     file.write(json.dumps(tmp))
     file.close()
-    if (not flag_run[id]):
+    if (id not in flag_run) or (not flag_run[id]):
         return
     bot.send_message(id, 'Тренировка окончена.')
     if result_max[id] == 0:
