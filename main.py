@@ -1,5 +1,4 @@
 import telebot
-import logging
 import time
 from random import randint
 from telebot import types
